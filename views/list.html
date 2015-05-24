@@ -4,7 +4,7 @@
 
 <ol>
   <li ng-repeat="contact in contacts | filter:query | orderBy:'lastName'"
-    >{{contact.firstName}} {{contact.lastName}}
+    ><a href="#/{{contact.id}}">{{contact.firstName}} {{contact.lastName}}</a>
     <input type="button" ng-click="remove(contact);" value="X"></li>
 </ol>
 
