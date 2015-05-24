@@ -2,21 +2,25 @@
 
 var app = angular.module('contacts', []);
 
-app.controller('ContactsListCtrl', ['$scope', function($scope) {
-
-    var addTelUri = function(contact) {
-        var tel = contact.tel.replace(/[\s\-._]/g, '');
-        if (tel.length > 2 && tel[0] == '0' && tel[1] == '0') {
-            /* Numéro international. */
-            contact.telUri = 'tel:+' + tel.substring(2);
-        } else if (tel.length == 10 && tel[0] == '0') {
-            /* Numéro français. */
-            contact.telUri = 'tel:+33-' + tel.substring(1);
-        } else {
-            /* Format non reconnu, on laisse le numéro tel quel. */
-            contact.telUri = 'tel:' + tel;
+app.factory('uriGenerator', [function() {
+    return {
+        tel: function(number) {
+            number = number.replace(/[\s\-._]/g, '');
+            if (number.length > 2 && number[0] == '0' && number[1] == '0') {
+                /* Numéro international. */
+                return 'tel:+' + number.substring(2);
+            } else if (number.length == 10 && number[0] == '0') {
+                /* Numéro français */
+                return 'tel:+33-' + number.substring(1);
+            } else {
+                /* Format non reconnu, on laisse le numéro tel quel. */
+                return 'tel:' + number;
+            }
         }
     }
+}]);
+
+app.controller('ContactsListCtrl', ['$scope', 'uriGenerator', function($scope, uriGenerator) {
 
     $scope.contacts = [
         {
@@ -37,7 +41,7 @@ app.controller('ContactsListCtrl', ['$scope', function($scope) {
     ];
 
     for (var i = 0; i < $scope.contacts.length; i++) {
-        addTelUri($scope.contacts[i]);
+        $scope.contacts[i].telUri = uriGenerator.tel($scope.contacts[i].tel);
     }
 
     $scope.remove = function(contact) {
@@ -50,7 +54,7 @@ app.controller('ContactsListCtrl', ['$scope', function($scope) {
         if ($scope.newContact.name
                 && $scope.newContact.email
                 && $scope.newContact.tel) {
-            addTelUri($scope.newContact);
+            $scope.newContact.telUri = uriGenerator.tel($scope.newContact.tel);
             $scope.contacts.push($scope.newContact);
             $scope.newContact = {};
         }
