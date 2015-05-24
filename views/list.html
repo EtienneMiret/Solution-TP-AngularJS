@@ -1,0 +1,17 @@
+<h1>TP AngularJS – Contacts</h1>
+
+<p><input ng-model="query" placeholder="Recherche"></p>
+
+<ol>
+  <li ng-repeat="contact in contacts | filter:query | orderBy:'lastName'"
+    >{{contact.firstName}} {{contact.lastName}}
+    <input type="button" ng-click="remove(contact);" value="X"></li>
+</ol>
+
+<form ng-submit="add();">
+  <p>Prénom&nbsp;: <input ng-model="newContact.firstName"></p>
+  <p>Nom&nbsp;: <input ng-model="newContact.lastName"></p>
+  <p>Adresse email&nbsp;: <input type="email" ng-model="newContact.email"></p>
+  <p>Numéro de téléphone&nbsp;: <input type="tel" ng-model="newContact.tel"></p>
+  <p><input type="submit" value="Ajouter"></p>
+</form>
