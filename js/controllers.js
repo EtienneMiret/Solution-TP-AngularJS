@@ -2,47 +2,25 @@
 
 var controllers = angular.module('controllers', ['services']);
 
-controllers.controller('ContactsListCtrl', ['$scope', 'uriGenerator', function($scope, uriGenerator) {
+controllers.controller('ContactsListCtrl', ['$scope', 'Contact', function($scope, Contact) {
 
-    $scope.contacts = [
-        {
-            firstName: 'Olivier',
-            lastName: 'Dupont',
-            email: 'olivier.dupont@groupehn.com',
-            tel: '01 23 45 67 89'
-        },
-        {
-            firstName:'Archibald',
-            lastName: 'Haddock',
-            email: 'capitaine.haddock@herge.be',
-            tel: '0 899 708 708'
-        },
-        {
-            firstName: 'Achile',
-            lastName: 'Talon',
-            email: 'achiletalon@polite.be',
-            tel: '09 87 65 43 21'
-        }
-    ];
-
-    for (var i = 0; i < $scope.contacts.length; i++) {
-        $scope.contacts[i].telUri = uriGenerator.tel($scope.contacts[i].tel);
-    }
+    $scope.contacts = Contact.query();
 
     $scope.remove = function(contact) {
-        $scope.contacts.splice($scope.contacts.indexOf(contact), 1);
+        contact.$delete();
+        $scope.contacts = Contact.query();
     };
 
-    $scope.newContact = {};
+    $scope.newContact = new Contact();
 
     $scope.add = function() {
         if ($scope.newContact.firstName
                 && $scope.newContact.lastName
                 && $scope.newContact.email
                 && $scope.newContact.tel) {
-            $scope.newContact.telUri = uriGenerator.tel($scope.newContact.tel);
-            $scope.contacts.push($scope.newContact);
-            $scope.newContact = {};
+            $scope.newContact.$save();
+            $scope.newContact = new Contact();
+            $scope.contacts = Contact.query();
         }
     };
 }]);
