@@ -1,0 +1,18 @@
+<h1>{{contact.firstName}} {{contact.lastName}}</h1>
+
+<form ng-submit="save();">
+  <dl>
+    <dt>Prénom</dt>
+    <dd><input ng-model="contact.firstName"></dd>
+    <dt>Nom</dt>
+    <dd><input ng-model="contact.lastName"></dd>
+    <dt>Adresse email</dt>
+    <dd><input ng-model="contact.email" type="email"></dd>
+    <dt>Numéro de téléphone</dt>
+    <dd><input ng-model="contact.tel" type="tel"></dd>
+  </dl>
+
+  <p><input type="submit" value="Enregistrer"></p>
+</form>
+
+<p><a href="#/{{contact.id}}">Annuler</a></p>

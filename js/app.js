@@ -12,6 +12,10 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'views/detail.html',
             controller: 'ContactsDetailCtrl'
         })
+        .when('/:id/edit', {
+            templateUrl: 'views/edit.html',
+            controller: 'ContactsEditCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         });

@@ -33,3 +33,11 @@ controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routePara
         $location.path('/');
     };
 }]);
+
+controllers.controller('ContactsEditCtrl', ['$scope', '$location', '$routeParams', 'Contact', function($scope, $location, $routeParams, Contact) {
+    $scope.contact = Contact.get($routeParams);
+    $scope.save = function() {
+        $scope.contact.$save();
+        $location.path('/' + $scope.contact.id);
+    };
+}]);
