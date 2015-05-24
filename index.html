@@ -22,8 +22,8 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="contact in contacts | filter:query | orderBy:'name'">
-        <td>{{contact.name}}</td>
+      <tr ng-repeat="contact in contacts | filter:query | orderBy:'lastName'">
+        <td>{{contact.firstName}} {{contact.lastName}}</td>
         <td><a href="mailto:{{contact.email}}">{{contact.email}}</a></td>
         <td><a href="{{contact.telUri}}">{{contact.tel}}</a></td>
         <td><input type="button" ng-click="remove(contact);" value="X"></td>
@@ -32,7 +32,8 @@
   </table>
 
   <form ng-submit="add();">
-    <p>Nom&nbsp;: <input ng-model="newContact.name"></p>
+    <p>Prénom&nbsp;: <input ng-model="newContact.firstName"></p>
+    <p>Nom&nbsp;: <input ng-model="newContact.lastName"></p>
     <p>Adresse email&nbsp;: <input type="email" ng-model="newContact.email"></p>
     <p>Numéro de téléphone&nbsp;: <input type="tel" ng-model="newContact.tel"></p>
     <p><input type="submit" value="Ajouter"></p>
