@@ -20,17 +20,20 @@ app.controller('ContactsListCtrl', ['$scope', function($scope) {
 
     $scope.contacts = [
         {
-            name: 'Olivier Dupont',
+            firstName: 'Olivier',
+            lastName: 'Dupont',
             email: 'olivier.dupont@groupehn.com',
             tel: '01 23 45 67 89'
         },
         {
-            name: 'Capitaine Haddock',
-            email: 'archibald.haddock@herge.be',
+            firstName:'Archibald',
+            lastName: 'Haddock',
+            email: 'capitaine.haddock@herge.be',
             tel: '0 899 708 708'
         },
         {
-            name: 'Achile Talon',
+            firstName: 'Achile',
+            lastName: 'Talon',
             email: 'achiletalon@polite.be',
             tel: '09 87 65 43 21'
         }
@@ -47,7 +50,8 @@ app.controller('ContactsListCtrl', ['$scope', function($scope) {
     $scope.newContact = {};
 
     $scope.add = function() {
-        if ($scope.newContact.name
+        if ($scope.newContact.firstName
+                && $scope.newContact.lastName
                 && $scope.newContact.email
                 && $scope.newContact.tel) {
             addTelUri($scope.newContact);
