@@ -10,6 +10,8 @@
 
   <h1>TP AngularJS – Contacts</h1>
 
+  <p><input ng-model="query" placeholder="Recherche"></p>
+
   <table>
     <thead>
       <tr>
@@ -20,7 +22,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="contact in contacts">
+      <tr ng-repeat="contact in contacts | filter:query | orderBy:'name'">
         <td>{{contact.name}}</td>
         <td><a href="mailto:{{contact.email}}">{{contact.email}}</a></td>
         <td><a href="{{contact.telUri}}">{{contact.tel}}</a></td>
