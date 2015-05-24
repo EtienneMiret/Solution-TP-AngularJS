@@ -8,6 +8,10 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'views/list.html',
             controller: 'ContactsListCtrl'
         })
+        .when('/new', {
+            templateUrl: 'views/edit.html',
+            controller: 'ContactsNewCtrl'
+        })
         .when('/:id', {
             templateUrl: 'views/detail.html',
             controller: 'ContactsDetailCtrl'
