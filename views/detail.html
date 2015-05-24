@@ -1,0 +1,17 @@
+<h1>{{contact.firstName}} {{contact.lastName}}</h1>
+
+<dl>
+  <dt>Prénom</dt>
+  <dd>{{contact.firstName}}</dd>
+  <dt>Nom</dt>
+  <dd>{{contact.lastName}}</dd>
+  <dt>Adresse email</dt>
+  <dd><a href="mailto:{{contact.email}}">{{contact.email}}</a></dd>
+  <dt>Numéro de téléphone</dt>
+  <dd><a href="{{contact.telUri}}">{{contact.tel}}</a></dd>
+</dl>
+
+<p><a href="#/{{contact.id}}/edit">Modifier</a>
+  <input type="button" ng-click="delete();" value="Supprimer"></p>
+
+<p><a href="#/">Liste des contacts</a>

@@ -24,3 +24,11 @@ controllers.controller('ContactsListCtrl', ['$scope', 'Contact', function($scope
         }
     };
 }]);
+
+controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routeParams', 'Contact', function ($scope, $location, $routeParams, Contact) {
+    $scope.contact = Contact.get($routeParams);
+    $scope.delete = function() {
+        $scope.contact.$delete();
+        $location.path('/');
+    };
+}]);
