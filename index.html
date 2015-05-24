@@ -12,24 +12,11 @@
 
   <p><input ng-model="query" placeholder="Recherche"></p>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Nom</th>
-        <th>Adresse email</th>
-        <th>Numéro de téléphone</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="contact in contacts | filter:query | orderBy:'lastName'">
-        <td>{{contact.firstName}} {{contact.lastName}}</td>
-        <td><a href="mailto:{{contact.email}}">{{contact.email}}</a></td>
-        <td><a href="{{contact.telUri}}">{{contact.tel}}</a></td>
-        <td><input type="button" ng-click="remove(contact);" value="X"></td>
-      </tr>
-    </tbody>
-  </table>
+  <ol>
+    <li ng-repeat="contact in contacts | filter:query | orderBy:'lastName'"
+      >{{contact.firstName}} {{contact.lastName}}
+      <input type="button" ng-click="remove(contact);" value="X"></li>
+  </ol>
 
   <form ng-submit="add();">
     <p>Prénom&nbsp;: <input ng-model="newContact.firstName"></p>
