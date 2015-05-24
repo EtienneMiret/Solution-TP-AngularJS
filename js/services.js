@@ -20,7 +20,7 @@ services.factory('uriGenerator', [function() {
     }
 }]);
 
-services.factory('Contact', ['uriGenerator', function(uriGenerator) {
+services.factory('Contact', [function() {
     var database = [
         {
             id: 0,
@@ -47,10 +47,6 @@ services.factory('Contact', ['uriGenerator', function(uriGenerator) {
 
     var lastId = 2;
 
-    for (var i = 0; i < database.length; i++) {
-        database[i].telUri = uriGenerator.tel(database[i].tel);
-    }
-
     var Contact = function(c, full) {
         var new_;
 
@@ -76,7 +72,6 @@ services.factory('Contact', ['uriGenerator', function(uriGenerator) {
             }
             if (this.tel) {
                 c.tel = this.tel;
-                c.telUri = uriGenerator.tel(c.tel);
             }
 
             if (new_) {

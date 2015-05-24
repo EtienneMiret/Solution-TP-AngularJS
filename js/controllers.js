@@ -25,8 +25,9 @@ controllers.controller('ContactsListCtrl', ['$scope', 'Contact', function($scope
     };
 }]);
 
-controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routeParams', 'Contact', function ($scope, $location, $routeParams, Contact) {
+controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routeParams', 'Contact', 'uriGenerator', function ($scope, $location, $routeParams, Contact, uriGenerator) {
     $scope.contact = Contact.get($routeParams);
+    $scope.contact.telUri = uriGenerator.tel($scope.contact.tel);
     $scope.delete = function() {
         $scope.contact.$delete();
         $location.path('/');
