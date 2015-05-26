@@ -21,5 +21,5 @@ services.factory('uriGenerator', [function() {
 }]);
 
 services.factory('Contact', ['$resource', function($resource) {
-    return $resource('http://localhost/tpangularjs.php/:id', {id:'@id'});
+    return $resource('http://localhost/tpangularjs.php/:id', {id:'@id', delay:'3'});
 }]);
