@@ -1,6 +1,6 @@
 'use strict';
 
-var services = angular.module('services', []);
+var services = angular.module('services', ['ngResource']);
 
 services.factory('uriGenerator', [function() {
     return {
@@ -20,77 +20,6 @@ services.factory('uriGenerator', [function() {
     }
 }]);
 
-services.factory('Contact', ['$http', function($http) {
-	var baseUrl = 'http://localhost/tpangularjs.php/';
-
-    /* Copie les champs de « from » vers « to » sauf
-     * ceux dont le nom commence par un ‘$’. */
-    var copyFields = function(from, to) {
-    	for (var prop in from) {
-    		if (prop[0] != '$') {
-    			to[prop] = from[prop];
-    		}
-    	}
-    }
-
-    var Contact = function() {
-    	var self = this;
-
-        this.$save = function(params, success, error) {
-        	$http.post(baseUrl + (self.id ? self.id : ''), self)
-        		.success(function(data) {
-        			copyFields(data, self);
-        			success && success();
-        		})
-        		.error(function(data) {
-        			console.log('Error while saving.', self, data);
-        			error && error();
-        		});
-        };
-
-        this.$delete = function(params, success, error) {
-        	$http.delete(baseUrl + (self.id ? self.id : ''))
-        		.success(function() {
-        			success && success();
-        		})
-        		.error(function(data) {
-        			console.log('Error while deleting.', self, data);
-        			error && error();
-        		});
-        };
-    };
-
-    Contact.query = function(params, success, error) {
-        var result = [];
-        $http.get(baseUrl)
-        	.success(function(data) {
-        		for (var i = 0; i < data.length; i++) {
-        			var c = new Contact();
-        			copyFields(data[i], c);
-        			result.push(c);
-        		}
-        		success && success();
-        	})
-        	.error(function(data) {
-        		console.log('Error while querying all.', data);
-        		error && error();
-        	});
-        return result;
-    };
-
-    Contact.get = function(params, success, error) {
-    	var result = new Contact();
-    	$http.get(baseUrl + params.id)
-    		.success(function(data) {
-    			copyFields(data, result);
-    			success && success();
-    		})
-    		.error(function(data) {
-    			console.log('Error while fetching ' + params.id, data);
-    			error && error();
-    		});
-        return result;
-    }
-
-    return Contact;
+services.factory('Contact', ['$resource', function($resource) {
+    return $resource('http://localhost/tpangularjs.php/:id', {id:'@id'});
 }]);
