@@ -1,6 +1,6 @@
-<h1>{{contact.firstName}} {{contact.lastName}}</h1>
+<h1 hn-loading="saving || loading">{{contact.firstName}} {{contact.lastName}}</h1>
 
-<form ng-submit="save();">
+<form ng-submit="save();" ng-show="!loading">
   <dl>
     <dt>Prénom</dt>
     <dd><input ng-model="contact.firstName"></dd>
