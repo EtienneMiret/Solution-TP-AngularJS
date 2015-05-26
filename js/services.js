@@ -109,6 +109,7 @@ services.factory('Contact', ['$interval', function($interval) {
             	c.$setData(database[i], false);
                 result.push(c);
             }
+            success && success();
         }, delay, 1);
         return result;
     };
@@ -127,6 +128,7 @@ services.factory('Contact', ['$interval', function($interval) {
                 error && error();
             } else {
             	result.$setData(c, true);
+            	success && success();
             }
     	}, delay, 1);
         return result;
