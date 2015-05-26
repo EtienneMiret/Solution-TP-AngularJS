@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('contacts', ['ngRoute', 'controllers']);
+var app = angular.module('contacts', ['ngRoute', 'controllers', 'directives']);
 
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider
