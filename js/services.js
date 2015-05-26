@@ -20,7 +20,9 @@ services.factory('uriGenerator', [function() {
     }
 }]);
 
-services.factory('Contact', [function() {
+services.factory('Contact', ['$interval', function($interval) {
+	var delay = 100; // En milliseconde.
+
     var database = [
         {
             id: 0,
@@ -47,70 +49,87 @@ services.factory('Contact', [function() {
 
     var lastId = 2;
 
-    var Contact = function(c, full) {
-        var new_;
+    /* Copie les champs de « from » vers « to » sauf
+     * ceux dont le nom commence par un ‘$’. */
+    var copyFields = function(from, to) {
+    	for (var prop in from) {
+    		if (prop[0] != '$') {
+    			to[prop] = from[prop];
+    		}
+    	}
+    }
 
-        if (c) {
-            this.id = c.id;
-            this.firstName = c.firstName;
-            this.lastName = c.lastName;
+    var Contact = function() {
+        var new_ = true;
+        var c = {};
+        var self = this;
+
+        this.$setData = function(data, full) {
+        	c = data;
             if (full) {
-                this.email = c.email;
-                this.tel = c.tel;
+            	copyFields(c, this);
+            } else {
+                this.id = c.id;
+                this.firstName = c.firstName;
+                this.lastName = c.lastName;
             }
             new_ = false;
-        } else {
-            c = {};
-            new_ = true;
-        }
-
-        this.$save = function() {
-            c.firstName = this.firstName;
-            c.lastName = this.lastName;
-            if (this.email) {
-                c.email = this.email;
-            }
-            if (this.tel) {
-                c.tel = this.tel;
-            }
-
-            if (new_) {
-                c.id = ++lastId;
-                database.push(c);
-                this.id = c.id;
-                new_ = false;
-            }
         };
 
-        this.$delete = function() {
-            if (new_) {
-                throw 'Object not persisted';
-            } else {
-                database.splice(database.indexOf(c), 1);
-            }
+        this.$save = function(params, success, error) {
+        	$interval(function() {
+        		copyFields(self, c);
+                if (new_) {
+                    c.id = ++lastId;
+                    database.push(c);
+                    self.id = c.id;
+                    new_ = false;
+                }
+                success && success();
+        	}, delay, 1);
+        };
+
+        this.$delete = function(params, success, error) {
+        	$interval(function() {
+        		if (new_) {
+        			error && error();
+        		} else {
+        			database.splice(database.indexOf(c), 1);
+        			success && success();
+        		}
+        	}, delay, 1);
         };
     };
 
-    Contact.query = function() {
+    Contact.query = function(params, success, error) {
         var result = [];
-        for (var i = 0; i < database.length; i++) {
-            result.push(new Contact(database[i], false));
-        }
+        $interval(function() {
+            for (var i = 0; i < database.length; i++) {
+            	var c = new Contact();
+            	c.$setData(database[i], false);
+                result.push(c);
+            }
+        }, delay, 1);
         return result;
     };
 
-    Contact.get = function(param) {
-        var i, c;
-        for (i = 0; i < database.length; i++) {
-            c = database[i];
-            if (c.id == param.id) {
-                break;
+    Contact.get = function(params, success, error) {
+    	var result = new Contact();
+    	$interval(function() {
+            var i, c;
+            for (i = 0; i < database.length; i++) {
+                c = database[i];
+                if (c.id == params.id) {
+                    break;
+                }
             }
-        }
-        if (i == database.length) {
-            throw 'Not found';
-        }
-        return new Contact(c, true);
+            if (i == database.length) {
+                error && error();
+            } else {
+            	result.$setData(c, true);
+            }
+    	}, delay, 1);
+        return result;
     }
 
     return Contact;

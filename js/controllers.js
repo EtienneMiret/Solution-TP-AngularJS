@@ -7,8 +7,9 @@ controllers.controller('ContactsListCtrl', ['$scope', 'Contact', function($scope
     $scope.contacts = Contact.query();
 
     $scope.remove = function(contact) {
-        contact.$delete();
-        $scope.contacts = Contact.query();
+        contact.$delete({}, function() {
+            $scope.contacts = Contact.query();
+        });
     };
 
     $scope.newContact = new Contact();
@@ -18,9 +19,10 @@ controllers.controller('ContactsListCtrl', ['$scope', 'Contact', function($scope
                 && $scope.newContact.lastName
                 && $scope.newContact.email
                 && $scope.newContact.tel) {
-            $scope.newContact.$save();
-            $scope.newContact = new Contact();
-            $scope.contacts = Contact.query();
+            $scope.newContact.$save({}, function() {
+                $scope.newContact = new Contact();
+                $scope.contacts = Contact.query();
+            });
         }
     };
 }]);
