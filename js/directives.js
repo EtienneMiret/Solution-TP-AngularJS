@@ -14,7 +14,6 @@ directives.directive('hnLoading', [function() {
         var e = element[0];
 
         scope.$watch('loading', function() {
-            console.log(scope.loading);
             if (scope.loading) {
                 spinner.spin(e);
             } else {
