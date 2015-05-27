@@ -21,7 +21,7 @@ services.factory('uriGenerator', [function() {
 }]);
 
 services.factory('Contact', ['$http', function($http) {
-	var baseUrl = 'http://localhost/tpangularjs.php/';
+	var baseUrl = 'http://vip46.groupehn.com:20003/angularjs/tpangularjs.php/';
 
     /* Copie les champs de « from » vers « to » sauf
      * ceux dont le nom commence par un ‘$’. */
