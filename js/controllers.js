@@ -9,11 +9,10 @@ controllers.controller('ContactsListCtrl', ['$scope', 'Contact', function($scope
     });
 }]);
 
-controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routeParams', '$interval', 'Contact', 'uriGenerator', function ($scope, $location, $routeParams, $interval, Contact, uriGenerator) {
+controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routeParams', '$interval', 'Contact', function ($scope, $location, $routeParams, $interval, Contact) {
     $scope.contactIsLoading = true;
     $scope.contact = Contact.get($routeParams, function() {
         $scope.contactIsLoading = false;
-        $scope.contact.telUri = uriGenerator.tel($scope.contact.tel);
     });
     $scope.deleting = false;
     $scope.delete = function() {

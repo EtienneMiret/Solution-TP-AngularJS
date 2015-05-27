@@ -1,6 +1,6 @@
 'use strict';
 
-var filters = angular.module('filters', []);
+var filters = angular.module('filters', ['services']);
 
 filters.filter('relativeTime', ['dateFilter', function(dateFilter) {
     return function(input, now) {
@@ -26,4 +26,14 @@ filters.filter('relativeTime', ['dateFilter', function(dateFilter) {
         }
         return result;
     }
+}]);
+
+filters.filter('telUri', ['uriGenerator', function(uriGenerator) {
+    return function(input) {
+        if (input) {
+            return uriGenerator.tel(input);
+        } else {
+            return '';
+        }
+    };
 }]);
