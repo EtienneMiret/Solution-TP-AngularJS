@@ -9,6 +9,10 @@
   <dd><a href="mailto:{{contact.email}}">{{contact.email}}</a></dd>
   <dt>Numéro de téléphone</dt>
   <dd><a href="{{contact.telUri}}">{{contact.tel}}</a></dd>
+  <dt>Création</dt>
+  <dd>{{contact.creation | relativeTime:now}}</dd>
+  <dt>Dernière modification</dt>
+  <dd>{{contact.modification | relativeTime:now}}</dd>
 </dl>
 
 <p ng-show="!contactIsLoading"><a href="#/{{contact.id}}/edit">Modifier</a>

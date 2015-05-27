@@ -9,7 +9,7 @@ controllers.controller('ContactsListCtrl', ['$scope', 'Contact', function($scope
     });
 }]);
 
-controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routeParams', 'Contact', 'uriGenerator', function ($scope, $location, $routeParams, Contact, uriGenerator) {
+controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routeParams', '$interval', 'Contact', 'uriGenerator', function ($scope, $location, $routeParams, $interval, Contact, uriGenerator) {
     $scope.contactIsLoading = true;
     $scope.contact = Contact.get($routeParams, function() {
         $scope.contactIsLoading = false;
@@ -22,6 +22,13 @@ controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routePara
             $location.path('/');
         });
     };
+    $scope.now = new Date();
+    var timer = $interval(function() {
+        $scope.now = new Date();
+    }, 1000);
+    $scope.$on('$destroy', function() {
+        $interval.cancel(timer);
+    })
 }]);
 
 controllers.controller('ContactsEditCtrl', ['$scope', '$location', '$routeParams', 'Contact', function($scope, $location, $routeParams, Contact) {
