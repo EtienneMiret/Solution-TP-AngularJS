@@ -15,11 +15,11 @@ filters.filter('relativeTime', ['dateFilter', function(dateFilter) {
             } else if (difference < 120 * 1000) { // Moins de deux minutes.
                 result = 'Il y a une minute.';
             } else if (difference < 3600 * 1000) { // Moins d’une heure.
-                result = 'Il y a ' + Math.floor(differnce / 60000) + ' minutes.';
+                result = 'Il y a ' + Math.floor(difference / 60000) + ' minutes.';
             } else if (now.getFullYear() == date.getFullYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) { // Aujourd’hui.
-                result = 'Aujourd\u2019hui \u00e0 ' + dateFilter(date, "HH'h'mm");
+                result = 'Aujourd\u2019hui \u00e0 ' + dateFilter(date, "HH'h'mm'.'");
             } else {
-                result = dateFilter(date, "'Le 'dd'/'MM'/'yyyy' \u00e0 'HH'h'mm");
+                result = dateFilter(date, "'Le 'dd'/'MM'/'yyyy' \u00e0 'HH'h'mm'.'");
             }
         } else {
             result = '';
