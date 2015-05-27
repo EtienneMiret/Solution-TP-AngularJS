@@ -6,6 +6,10 @@ controllers.controller('ContactsListCtrl', ['$scope', 'Contact', function($scope
     $scope.listIsLoading = true;
     $scope.contacts = Contact.query({}, function() {
         $scope.listIsLoading = false;
+    }, function(response) {
+        $scope.listIsLoading = false;
+        $scope.msg = response.data;
+        console.warn(response);
     });
 }]);
 
@@ -13,12 +17,20 @@ controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routePara
     $scope.contactIsLoading = true;
     $scope.contact = Contact.get($routeParams, function() {
         $scope.contactIsLoading = false;
+    }, function(response) {
+        $scope.contactIsLoading = false;
+        $scope.msg = response.data;
+        console.warn(response);
     });
     $scope.deleting = false;
     $scope.delete = function() {
         $scope.deleting = true;
         $scope.contact.$delete({}, function() {
             $location.path('/');
+        }, function(response) {
+            $scope.deleting = false;
+            $scope.msg = response.data;
+            console.warn(response);
         });
     };
     $scope.now = new Date();
@@ -33,6 +45,10 @@ controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routePara
 controllers.controller('ContactsEditCtrl', ['$scope', '$location', '$routeParams', 'Contact', function($scope, $location, $routeParams, Contact) {
     $scope.contact = Contact.get($routeParams, function() {
         $scope.loading = false;
+    }, function(response) {
+        $scope.loading = false;
+        $scope.msg = response.data;
+        console.warn(response);
     });
     $scope.loading = true;
     $scope.saving = false;
@@ -40,6 +56,10 @@ controllers.controller('ContactsEditCtrl', ['$scope', '$location', '$routeParams
         $scope.saving = true;
         $scope.contact.$save({}, function() {
             $location.path('/' + $scope.contact.id);
+        }, function(response) {
+            $scope.saving = false;
+            $scope.msg = response.data;
+            console.warn(response);
         });
     };
 }]);
@@ -52,6 +72,10 @@ controllers.controller('ContactsNewCtrl', ['$scope', '$location', 'Contact', fun
         $scope.saving = true;
         $scope.contact.$save({}, function() {
             $location.path('/' + $scope.contact.id);
+        }, function(response) {
+            $scope.saving = false;
+            $scope.msg = response.data;
+            console.warn(response);
         });
     };
 }]);
