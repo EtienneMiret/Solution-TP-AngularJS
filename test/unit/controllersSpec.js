@@ -170,6 +170,101 @@ describe('The controller', function() {
 
     });
 
+    describe('ContactsEditCtrl', function() {
+        var url = webserviceUrl + '/2';
+        var talon = {
+            id: 2,
+            firstName: 'Achile',
+            lastName: 'Talon',
+            email: 'achile.talon@polite',
+            tel: '00 32 2 12 28 45',
+            creation: '2015-05-27T10:20:16+02:00',
+            modification: '2015-05-27T10:20:16+02:00',
+            fields: []
+        };
+
+        beforeEach(inject(function($routeParams) {
+            $routeParams.id = '2';
+        }));
+
+        it('should initially be loading', function() {
+            httpBackend.expectGET(url).respond(talon);
+            createController('ContactsEditCtrl');
+            expect(scope.loading).toBe(true);
+            expect(scope.saving).toBe(false);
+            expect(scope.contact).toEqualData({});
+            expect(scope.msg).toBe(undefined);
+            expect(scope.save).toEqual(jasmine.any(Function));
+            httpBackend.flush();
+        });
+
+        it('should properly load contact data', function() {
+            httpBackend.expectGET(url).respond(talon);
+            createController('ContactsEditCtrl');
+            httpBackend.flush();
+            expect(scope.loading).toBe(false);
+            expect(scope.saving).toBe(false);
+            expect(scope.contact).toEqualData(talon);
+            expect(scope.msg).toBe(undefined);
+            expect(scope.save).toEqual(jasmine.any(Function));
+        });
+
+        it('should gracefully handle failures', function() {
+            httpBackend.expectGET(url).respond(404, 'No such contact.');
+            createController('ContactsEditCtrl');
+            httpBackend.flush();
+            expect(scope.loading).toBe(false);
+            expect(scope.saving).toBe(false);
+            expect(scope.contact).toEqualData({});
+            expect(scope.msg).toBe('No such contact.');
+            expect(scope.save).toEqual(jasmine.any(Function));
+        });
+
+        it('should be able to update a contact', function() {
+            var modifiedTalon = JSON.parse(JSON.stringify(talon));
+            modifiedTalon.tel = '00 32 2 12 34 56';
+
+            httpBackend.expectGET(url).respond(talon);
+            createController('ContactsEditCtrl');
+            httpBackend.flush();
+            httpBackend.expectPOST(url, function(data) {
+                var obj = JSON.parse(data);
+                return obj.id == modifiedTalon.id
+                        && obj.firstName == modifiedTalon.firstName
+                        && obj.lastName == modifiedTalon.lastName
+                        && obj.email == modifiedTalon.email
+                        && obj.tel == modifiedTalon.tel
+                        && angular.equals(obj.fields, modifiedTalon.fields);
+            }).respond(modifiedTalon);
+
+            scope.contact.tel = '00 32 2 12 34 56';
+            scope.save();
+
+            expect(scope.loading).toBe(false);
+            expect(scope.saving).toBe(true);
+            expect(scope.contact).toEqualData(modifiedTalon);
+            expect(scope.msg).toBe(undefined);
+            expect(scope.save).toEqual(jasmine.any(Function));
+
+            httpBackend.flush();
+        });
+
+        it('should gracefully handle failures on update', function() {
+            httpBackend.expectGET(url).respond(talon);
+            createController('ContactsEditCtrl');
+            httpBackend.flush();
+            httpBackend.expectPOST(url, talon).respond(403, 'Modification forbidden.');
+            scope.save();
+            httpBackend.flush();
+            expect(scope.loading).toBe(false);
+            expect(scope.saving).toBe(false);
+            expect(scope.contact).toEqualData(talon);
+            expect(scope.msg).toBe('Modification forbidden.');
+            expect(scope.save).toEqual(jasmine.any(Function));
+        });
+
+    });
+
     afterEach(function() {
         httpBackend.verifyNoOutstandingExpectation();
         httpBackend.verifyNoOutstandingRequest();
