@@ -3,6 +3,26 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 11
+
+* Ajout du champ `.delay` dans l’objet donné à *$resource* pour créer *Contact*.
+  Cela ajoute « ?delay=3 » à chaque requète envoyée au web-service.
+* Le premier paramètre de [scope.$watch()][scope.$watch] peut être une chaîne
+  de caractère contenant une expression à évaluer. Ici, c’est simplement le
+  nom d’une variable du modèle local à la directive.
+* `scope: {loading: '=hnLoading'}` permet de créer un modèle local dans la
+  directive, avec une seule variable. Cette variable est liée à une valeur
+  du modèle du contrôleur via le paramètre de l’attribut `hn-loading`.
+* Bien penser à supprimer le curseur avec `scope.$on('$destroy')`.
+* Dans les différents modèles HTML, l’attribut `hn-loading` prends différentes
+  valeurs, et nottament des expressions. Ça marche aussi !
+* L’utilisation de la directive *ngShow* permet de ne pas afficher certaines
+  parties de la page pendant le chargement.
+* *ngShow* est inutile sur la liste des contacts, car dans cette page,
+  `$scope.contacts` vaut `[]` pendant toute la durée du chargement.
+
+[scope.$watch]: https://docs.angularjs.org/api/ng/type/$rootScope.Scope#$watch
+
 ## Exercice 10
 
 * L’API du web-service *tpangularjs.php* a été soigneusement choisie pour
