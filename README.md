@@ -3,6 +3,19 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 10
+
+* L’API du web-service *tpangularjs.php* a été soigneusement choisie pour
+  correspondre à l’API interrogée par défaut par le service *$resource*.
+  Il est toutefois possible de configurer *$resource* pour interroger d’autres
+  API.
+* L’API imposée au service *Contact* dans l’énoncé de l’exercice 7 a été
+  soigneusement choisie pour correspondre à l’API fournie par défaut par le
+  service *$resource*. Il est toutefois possible de fournir des API légèrement
+  différentes.
+* Lorsque le paramètre `.id` n’est pas fourni (dans les appels à `.query()` par
+  exemple), le paramètre « :id » de l’URL est supprimé.
+
 ## Exercice 9
 
 * Dans la méthode `$save()`,
