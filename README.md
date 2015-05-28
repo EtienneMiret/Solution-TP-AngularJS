@@ -3,6 +3,19 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 8
+
+* Création d’un contrôleur et d’un modèle HTML pour chaque type de page.
+* Les pages d’édition d’un contact et de création d’un nouveau contact
+  sont très semblables. Elles partagent le même modèle HTML et leurs
+  contrôleurs se ressemblent beaucoup.
+* Le service *$location* permet de modifier la partie de l’URL sur laquelle
+  travaille *ngRoute*.
+* Le module des contrôleurs dépend de *ngRoute* à cause de l’utilisation du
+  service *$routeParams*.
+* Le contenu de l’élément *body* s’affiche lorsqu’il y a eu un problème au
+  lancement d’AngularJS. Il est donc possible d’y mettre un message d’erreur.
+
 ## Exercice 7
 
 * `success && success();` est un racourci pour tester que `success`
