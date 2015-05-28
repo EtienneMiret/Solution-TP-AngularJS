@@ -265,6 +265,57 @@ describe('The controller', function() {
 
     });
 
+    describe('ContactsNewCtrl', function() {
+        var blake = {
+            firstName: 'Francis',
+            lastName: 'Blake',
+            email: 'francis.blake@mi5',
+            tel: '00 44 123 456'
+        };
+
+        it('should be loaded upfront', function() {
+            createController('ContactsNewCtrl');
+            expect(scope.loading).toBe(false);
+            expect(scope.saving).toBe(false);
+            expect(scope.contact).toEqualData({});
+            expect(scope.msg).toBe(undefined);
+            expect(scope.save).toEqual(jasmine.any(Function));
+        });
+
+        it('should be able to create a contact', function() {
+            createController('ContactsNewCtrl');
+            scope.contact.firstName = blake.firstName;
+            scope.contact.lastName = blake.lastName;
+            scope.contact.email = blake.email;
+            scope.contact.tel = blake.tel;
+            httpBackend.expectPOST(webserviceUrl, blake).respond({id: 351});
+            scope.save();
+            expect(scope.loading).toBe(false);
+            expect(scope.saving).toBe(true);
+            expect(scope.contact).toEqualData(blake);
+            expect(scope.msg).toBe(undefined);
+            expect(scope.save).toEqual(jasmine.any(Function));
+            httpBackend.flush();
+        });
+
+        it('should gracefully handle creation failures', function() {
+            createController('ContactsNewCtrl');
+            scope.contact.firstName = blake.firstName;
+            scope.contact.lastName = blake.lastName;
+            scope.contact.email = blake.email;
+            scope.contact.tel = blake.tel;
+            httpBackend.expectPOST(webserviceUrl, blake).respond(400, 'Invalid email.');
+            scope.save();
+            httpBackend.flush();
+            expect(scope.loading).toBe(false);
+            expect(scope.saving).toBe(false);
+            expect(scope.contact).toEqualData(blake);
+            expect(scope.msg).toBe('Invalid email.');
+            expect(scope.save).toEqual(jasmine.any(Function));
+        });
+
+    });
+
     afterEach(function() {
         httpBackend.verifyNoOutstandingExpectation();
         httpBackend.verifyNoOutstandingRequest();
