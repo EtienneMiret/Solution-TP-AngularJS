@@ -1,6 +1,6 @@
 'use strict';
 
-var controllers = angular.module('controllers', ['services']);
+var controllers = angular.module('controllers', ['ngRoute', 'services']);
 
 controllers.controller('ContactsListCtrl', ['$scope', 'Contact', function($scope, Contact) {
     $scope.listIsLoading = true;
