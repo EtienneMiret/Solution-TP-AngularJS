@@ -3,6 +3,23 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 7
+
+* `success && success();` est un racourci pour tester que `success`
+  est définie avant de l’appeler.
+* Remarquer qu la base de données est une variable privée du service.
+  Il n’y a aucun moyen d’y accéder sans passer par le service.
+* De même, `c`, `new_` et `self` sont des variables privées d’un contact.
+* Tout ce qui doit s’exécuter après la fin d’une méthode asynchrone
+  doit être mis dans une méthode callback.
+* Le module principal ne dépend que du module des contrôleurs,
+  en effet les services ne sont pas appelés directement par la page HTML.
+* Le module des contrôleurs dépends du module des service
+  puisque le contrôleur utilise le service.
+* Si on indique que le module principal dépend des deux autres
+  et qu’eux-mêmes n’ont aucunes dépendances ça marche,
+  mais ce n’est pas propre et ça pose des problèmes pour les tests unitaires.
+
 ## Exercice 6
 
 * Si l’exemple du sujet montrait un filtrage sur une chaîne statique,
