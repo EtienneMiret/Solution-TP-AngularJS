@@ -27,7 +27,7 @@ describe('The controller', function() {
         });
     });
 
-    beforeEach(module('contacts'));
+    beforeEach(module('controllers'));
 
     beforeEach(inject(function($httpBackend, $rootScope, $controller) {
         httpBackend = $httpBackend;
