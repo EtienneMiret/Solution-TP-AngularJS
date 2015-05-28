@@ -3,6 +3,13 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 9
+
+* Dans la méthode `$save()`,
+  penser à mettre à jour `self` après le succès de l’appel à `$http.post()`.
+* Attention, les callbacks doivent être appelées tout à la fin de chaque
+  méthode, une fois le modèle mis à jour.
+
 ## Exercice 8
 
 * Création d’un contrôleur et d’un modèle HTML pour chaque type de page.
