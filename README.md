@@ -3,6 +3,13 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 6
+
+* Si l’exemple du sujet montrait un filtrage sur une chaîne statique,
+  il est évidement possible d’utiliser n’importe quelle expression
+  comme paramètre de `filterBy:`. En particulier, un élément du modèle.
+* Noter que la recherche fonctionne sur tous les champs des contacts.
+
 ## Exercice 5
 
 Utilisation de la méthode [.factory()][Module.factory] pour enregistrer
