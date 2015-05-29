@@ -3,6 +3,13 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 13
+
+* Il suffit d’enregistrer la valeur de retour de la requête dans le modèle
+  en cas d’erreur. 
+* Utilisation d’un simple paragraphe pour afficher les messages à destination
+  de l’utilisateur.
+
 ## Exercice 12
 
 * Dans un filtre, toujours gérer le cas où la donnée en entrée n’est pas
