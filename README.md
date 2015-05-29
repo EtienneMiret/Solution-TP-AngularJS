@@ -3,6 +3,30 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 12
+
+* Dans un filtre, toujours gérer le cas où la donnée en entrée n’est pas
+  définie. Renvoyer une chaîne vide est souvent le mieux dans ce cas.
+* Un composant AngularJS peut dépendre d’un filtre comme si c’était un service
+  en utilisant « *filterName*Filter » comme dépendance.
+* Il est aussi possible de dépendre du service [$filter][$filter].
+* Le filtre *relativeTime* accepte en entrée tous les format de date acceptés
+  par [Date.parse()][Date.parse], y compris le format ISO 8601 renvoyé par le
+  web-service.
+* Le filtre *relativeTime* prend la date courrante en paramètre. Si
+  `new Date()` était utilisé dans le filtre, celui-ci ne pourrait pas être
+  réexécuté à intervalles réguliers.
+* Le contrôleur *ContactsDetailCtrl* met à jour la variable du modèle `now`
+  toutes les secondes. Comme celle-ci est utilisée en paramètre du filtre, ce
+  dernier est réexécuté toutes les secondes.
+  Bien sûr, il est possible de prendre un intervalle différent.
+  C’est un choix à faire entre précision et performance.
+* Il ne faut pas oublier de désactiver le timer une fois qu’il est inutile.
+  Utiliser `$scope.$on('$destroy', …)` pour cela.
+
+[$filter]: https://docs.angularjs.org/api/ng/service/$filter
+[Date.parse]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse
+
 ## Exercice 11
 
 * Ajout du champ `.delay` dans l’objet donné à *$resource* pour créer *Contact*.
