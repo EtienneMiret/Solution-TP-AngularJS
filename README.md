@@ -3,6 +3,33 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 14
+
+* Pas de tests pour le service *Contact* car cela reviendrait essentiellement
+  à tester le service *$resource* fourni par AngularJS.
+* Les modules sont testés un par un. Il faut donc commencer les tests par :
+  `beforeEach(module('nomModule'));` et pas par :
+  `beforeEach(module('contacts'));`.
+* Les tests du filtre *relativeTime* ne doivent pas dépendre de l’heure système.
+  Le paramètre `now` se voit donc affecter une date prédéfinie.
+* Impossible de faire pareil pour le test de *ContactsDetailCtrl* car celui-ci
+  appelle `new Date()` directement. Cela signifie qu’en cas de bug dans la
+  gestion des dates, le test peux réussir à certaines heures et échouer à
+  d’autres.
+* Dans le test de *ContactsEditCtrl*, un objet `talon` est cloné grâce aux
+  méthode [JSON.parse()][JSON.parse] et [JSON.stringify()][JSON.stringify].
+  Cloner cet objet est très important pour que le test ait un sens.
+* Le matcher *toEqualData* utilise la méthode
+  [angular.equals()][angular.equals].
+  Cela permet de ne pas comparer les méthodes,
+  ni les propriétés dont le nom commence par ‘$’.
+* Le matcher *toEqualNow* accepte un écart de 100ms pour tenir compte de la durée
+  d’exécution du test.
+
+[JSON.parse]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
+[JSON.stringify]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+[angular.equals]: https://docs.angularjs.org/api/ng/function/angular.equals
+
 ## Exercice 13
 
 * Il suffit d’enregistrer la valeur de retour de la requête dans le modèle
