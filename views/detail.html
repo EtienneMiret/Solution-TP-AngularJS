@@ -1,4 +1,6 @@
-<h1 hn-loading="contactIsLoading || deleting">{{contact.firstName}} {{contact.lastName}}</h1>
+<div class="page-header">
+  <h1 hn-loading="contactIsLoading || deleting">{{contact.firstName}} {{contact.lastName}}</h1>
+</div>
 
 <dl ng-show="!contactIsLoading">
   <dt>Prénom</dt>
@@ -11,7 +13,7 @@
   <dd><a href="{{contact.telUri}}">{{contact.tel}}</a></dd>
 </dl>
 
-<p ng-show="!contactIsLoading"><a href="#/{{contact.id}}/edit">Modifier</a>
-  <input type="button" ng-click="delete();" value="Supprimer"></p>
+<p ng-show="!contactIsLoading"><a href="#/{{contact.id}}/edit" class="btn btn-default">Modifier</a>
+  <input type="button" ng-click="delete();" value="Supprimer" class="btn btn-danger"></p>
 
 <p><a href="#/">Liste des contacts</a>

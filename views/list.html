@@ -1,4 +1,6 @@
-<h1 hn-loading="listIsLoading">TP AngularJS – Contacts</h1>
+<div class="page-header">
+  <h1 hn-loading="listIsLoading">TP AngularJS – Contacts</h1>
+</div>
 
 <p><input ng-model="query" placeholder="Recherche"></p>
 
@@ -7,4 +9,4 @@
     ><a href="#/{{contact.id}}">{{contact.firstName}} {{contact.lastName}}</a></li>
 </ol>
 
-<p><a href="#/new">Nouveau contact</a></p>
+<p><a href="#/new" class="btn btn-default">Nouveau contact</a></p>
