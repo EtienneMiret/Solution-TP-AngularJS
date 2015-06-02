@@ -60,12 +60,14 @@ directives.directive('hnLinkField', ['$document', 'uriGenerator', 'relativeTimeF
             element.append(link);
         } else {
             if (scope.field.type == 'DATETIME') {
-                var timer = $interval(function() {
+                var update = function() {
                     element.text(relativeTimeFilter(scope.field.value, new Date()));
-                }, 1000);
+                };
+                var timer = $interval(update, 1000);
                 scope.$on('$destroy', function() {
                     $interval.cancel(timer);
                 });
+                update();
             } else {
                 element.text(scope.field.value);
             }
