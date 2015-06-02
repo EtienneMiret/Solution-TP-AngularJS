@@ -12,7 +12,7 @@
   <dt>Numéro de téléphone</dt>
   <dd><a href="{{contact.tel | telUri}}">{{contact.tel}}</a></dd>
   <dt ng-repeat-start="field in contact.fields | orderBy:'order'">{{field.name}}</dt>
-  <dd ng-repeat-end>{{field.value}}</dd>
+  <dd ng-repeat-end hn-link-field="field"></dd>
   <dt>Création</dt>
   <dd>{{contact.creation | relativeTime:now}}</dd>
   <dt>Dernière modification</dt>
