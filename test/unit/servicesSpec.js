@@ -32,16 +32,184 @@ describe('The service', function() {
     });
 
     describe('contactEditor', function() {
-        var contactEditor;
+        var scope;
+        var a, b, c;
 
-        beforeEach(inject(function(_contactEditor_) {
-            contactEditor = _contactEditor_;
+        beforeEach(inject(function(contactEditor) {
+            a = {order: 0};
+            b = {order: 1};
+            c = {order: 2};
+            scope = {contact: {fields:[b, a, c]}};
+            contactEditor.addBehavior(scope);
         }));
 
         it('should add behavior to $scope objects', function() {
-            var scope = {};
-            contactEditor.addBehavior(scope);
             expect(scope.save).toEqual(jasmine.any(Function));
+            expect(scope.remove).toEqual(jasmine.any(Function));
+            expect(scope.addField).toEqual(jasmine.any(Function));
+            expect(scope.moveUp).toEqual(jasmine.any(Function));
+            expect(scope.moveDown).toEqual(jasmine.any(Function));
+        });
+
+        describe('remove method', function() {
+
+            it('should remove the given field', function() {
+                expect(scope.contact.fields.length).toBe(3);
+                expect(scope.contact.fields.indexOf(a)).not.toBe(-1);
+                expect(scope.contact.fields.indexOf(b)).not.toBe(-1);
+                expect(scope.contact.fields.indexOf(c)).not.toBe(-1);
+
+                scope.remove(a);
+
+                expect(scope.contact.fields.length).toBe(2);
+                expect(scope.contact.fields.indexOf(a)).toBe(-1);
+                expect(scope.contact.fields.indexOf(b)).not.toBe(-1);
+                expect(scope.contact.fields.indexOf(c)).not.toBe(-1);
+
+                scope.remove(b);
+
+                expect(scope.contact.fields.length).toBe(1);
+                expect(scope.contact.fields.indexOf(a)).toBe(-1);
+                expect(scope.contact.fields.indexOf(b)).toBe(-1);
+                expect(scope.contact.fields.indexOf(c)).not.toBe(-1);
+
+                scope.remove(c);
+
+                expect(scope.contact.fields.length).toBe(0);
+            });
+
+            it('should reorder remaining fields', function() {
+                expect(a.order).toBe(0);
+                expect(b.order).toBe(1);
+                expect(c.order).toBe(2);
+
+                scope.remove(b);
+
+                expect(a.order).toBe(0);
+                expect(c.order).toBe(1);
+
+                scope.remove(a);
+
+                expect(c.order).toBe(0);
+            });
+
+            it('should reorder *all* remaining fields', function() {
+                expect(a.order).toBe(0);
+                expect(b.order).toBe(1);
+                expect(c.order).toBe(2);
+
+                scope.remove(a);
+
+                expect(b.order).toBe(0);
+                expect(c.order).toBe(1);
+            });
+
+        });
+
+        describe('addField method', function() {
+            var fields;
+
+            beforeEach(function() {
+                fields = scope.contact.fields;
+            });
+
+            it ('should create a new field', function() {
+                var oldLength = fields.length;
+                scope.addField('foo');
+                expect(fields.length).toBe(oldLength + 1);
+                scope.addField('bar');
+                expect(fields.length).toBe(oldLength + 2);
+            });
+
+            it ('should add a field of correct type', function() {
+                scope.addField('foo');
+                expect(fields[fields.length - 1].type).toBe('foo');
+                scope.addField('bar');
+                expect(fields[fields.length - 1].type).toBe('bar');
+            });
+
+            it('should set the new field order to be the highest order + 1', function() {
+                var highestOrder = -1;
+                for (var i = 0; i < fields.length; i++) {
+                    if (fields[i].order > highestOrder) {
+                        highestOrder = fields[i].order;
+                    }
+                }
+
+                scope.addField('foo');
+                expect(fields[fields.length - 1].order).toBe(highestOrder + 1);
+
+                scope.addField('bar');
+                expect(fields[fields.length - 1].order).toBe(highestOrder + 2);
+            });
+
+            it('should set the new field order to 0 if no fields exists', function() {
+                while(fields.length > 0) {
+                    fields.shift();
+                }
+
+                scope.addField('foo');
+
+                expect(fields.length).toBe(1);
+                expect(fields[0].order).toBe(0);
+            });
+
+        });
+
+        describe('moveUp method', function() {
+
+            it('should reorder fields', function() {
+                expect(a.order).toBe(0);
+                expect(b.order).toBe(1);
+                expect(c.order).toBe(2);
+
+                scope.moveUp(c);
+
+                expect(a.order).toBe(0);
+                expect(b.order).toBe(2);
+                expect(c.order).toBe(1);
+
+                scope.moveUp(c);
+
+                expect(a.order).toBe(1);
+                expect(b.order).toBe(2);
+                expect(c.order).toBe(0);
+
+                scope.moveUp(a);
+
+                expect(a.order).toBe(0);
+                expect(b.order).toBe(2);
+                expect(c.order).toBe(1);
+            });
+
+        });
+
+        describe('moveDown method', function() {
+
+            it('should reorder fields', function() {
+                expect(a.order).toBe(0);
+                expect(b.order).toBe(1);
+                expect(c.order).toBe(2);
+
+                scope.moveDown(a);
+
+                expect(a.order).toBe(1);
+                expect(b.order).toBe(0);
+                expect(c.order).toBe(2);
+
+                scope.moveDown(a);
+
+                expect(a.order).toBe(2);
+                expect(b.order).toBe(0);
+                expect(c.order).toBe(1);
+
+                scope.moveDown(c);
+
+                expect(a.order).toBe(1);
+                expect(b.order).toBe(0);
+                expect(c.order).toBe(2);
+            });
+
         });
 
     });

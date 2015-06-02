@@ -37,6 +37,35 @@ services.factory('contactEditor', ['$location', function($location) {
                     console.warn(response);
                 });
             };
+            $scope.remove = function(field) {
+                var fields = $scope.contact.fields;
+                fields.splice(fields.indexOf(field), 1);
+                for (var i = 0; i < fields.length; i++) {
+                    if (fields[i].order > field.order) {
+                        fields[i].order--;
+                    }
+                }
+            };
+            $scope.addField = function(type) {
+                var fields = $scope.contact.fields;
+                fields.push({name:'', value:'', order:fields.length, type:type});
+            };
+            var move = function(field, delta) {
+                var fields = $scope.contact.fields;
+                for (var i = 0; i < fields.length; i++) {
+                    if (fields[i].order == field.order + delta) {
+                        fields[i].order -= delta;
+                        break;
+                    }
+                }
+                field.order += delta;
+            };
+            $scope.moveUp = function(field) {
+                move(field, -1);
+            };
+            $scope.moveDown = function(field) {
+                move(field, 1);
+            }
         }
     };
 }]);

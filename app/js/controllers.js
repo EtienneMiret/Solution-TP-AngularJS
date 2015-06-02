@@ -57,6 +57,7 @@ controllers.controller('ContactsEditCtrl', ['$scope', '$routeParams', 'Contact',
 
 controllers.controller('ContactsNewCtrl', ['$scope', 'Contact', 'contactEditor', function($scope, Contact, contactEditor) {
     $scope.contact = new Contact();
+    $scope.contact.fields = [];
     $scope.loading = false;
     $scope.saving = false;
     contactEditor.addBehavior($scope);

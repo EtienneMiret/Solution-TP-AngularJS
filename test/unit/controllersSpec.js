@@ -270,14 +270,15 @@ describe('The controller', function() {
             firstName: 'Francis',
             lastName: 'Blake',
             email: 'francis.blake@mi5',
-            tel: '00 44 123 456'
+            tel: '00 44 123 456',
+            fields: []
         };
 
         it('should be loaded upfront', function() {
             createController('ContactsNewCtrl');
             expect(scope.loading).toBe(false);
             expect(scope.saving).toBe(false);
-            expect(scope.contact).toEqualData({});
+            expect(scope.contact).toEqualData({fields: []});
             expect(scope.msg).toBe(undefined);
             expect(scope.save).toEqual(jasmine.any(Function));
         });

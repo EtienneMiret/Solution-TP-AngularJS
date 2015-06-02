@@ -12,7 +12,21 @@
     <dd><input ng-model="contact.email" type="email"></dd>
     <dt>Numéro de téléphone</dt>
     <dd><input ng-model="contact.tel" type="tel"></dd>
+    <dt ng-repeat-start="field in contact.fields | orderBy:'order'"><input ng-model="field.name">
+      <input type="button" ng-click="remove(field);" value="X" class="btn btn-xs btn-danger">
+      <input type="button" ng-click="moveUp(field);" value="&#x2191;" class="btn btn-xs btn-default" ng-disabled="$first">
+      <input type="button" ng-click="moveDown(field);" value="&#x2193;" class="btn btn-xs btn-default" ng-disabled="$last"></dt>
+    <dd ng-repeat-end><input type="{{field.type | lowercase}}" ng-model="field.value"></dd>
   </dl>
+
+  <p>Ajouter un champ&nbsp;:
+    <input type="button" value="Texte" ng-click="addField('TEXT');" class="btn btn-sm btn-default">
+    <input type="button" value="Tél" ng-click="addField('TEL');" class="btn btn-sm btn-default">
+    <input type="button" value="URL" ng-click="addField('URL');" class="btn btn-sm btn-default">
+    <input type="button" value="Email" ng-click="addField('EMAIL');" class="btn btn-sm btn-default">
+    <input type="button" value="Date" ng-click="addField('DATE');" class="btn btn-sm btn-default">
+    <input type="button" value="Heure" ng-click="addField('TIME');" class="btn btn-sm btn-default">
+    <input type="button" value="Date et heure" ng-click="addField('DATETIME');" class="btn btn-sm btn-default"></p>
 
   <p><a href="#/{{contact.id}}" class="btn btn-default">Annuler</a>
     <input type="submit" value="Enregistrer" class="btn btn-success"></p>
