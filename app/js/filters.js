@@ -8,6 +8,8 @@ filters.filter('relativeTime', [function() {
         if (input) {
             var date = moment(input);
             var difference = Math.abs(now.getTime() - date); // Écart en millisecondes.
+            var tomorrow = moment(now).add(1, 'day');
+            var yesterday = moment(now).subtract(1, 'day');
             if (difference < 2000) { // Moins de 2 secondes.
                 result = date.isBefore(now) ? '\u00c0 l\u2019instant.' : 'Dans un instant.';
             } else if (difference < 60 * 1000) { // Moins d’une minute.
@@ -18,6 +20,10 @@ filters.filter('relativeTime', [function() {
                 result = (date.isBefore(now) ? 'Il y a ' : 'Dans ') + Math.floor(difference / 60000) + ' minutes.';
             } else if (now.getFullYear() == date.year() && now.getMonth() == date.month() && now.getDate() == date.date()) { // Aujourd’hui.
                 result = 'Aujourd\u2019hui \u00e0 ' + date.format('HH[h]mm.');
+            } else if (tomorrow.year() == date.year() && tomorrow.month() == date.month() && tomorrow.date() == date.date()) { // Demain
+                result = 'Demain \u00e0 ' + date.format('HH[h]mm.');
+            } else if (yesterday.year() == date.year() && yesterday.month() == date.month() && yesterday.date() == date.date()) { // Demain
+                result = 'Hier \u00e0 ' + date.format('HH[h]mm.');
             } else {
                 result = date.format('[Le] DD/MM/YYYY \u00e0 HH[h]mm.');
             }

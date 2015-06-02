@@ -30,9 +30,15 @@ describe('The filter ', function() {
         };
         var after = function(seconds) {
             return before(-seconds);
-        }
+        };
         var todayAt = function(hours, minutes) {
-            return (new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes)).toJSON();
+            return new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes).toJSON();
+        };
+        var yesterdayAt = function(hours, minutes) {
+            return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1, hours, minutes).toJSON();
+        };
+        var tomorrowAt = function(hours, minutes) {
+            return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, hours, minutes).toJSON();
         }
 
         beforeEach(inject(function(relativeTimeFilter) {
@@ -42,6 +48,7 @@ describe('The filter ', function() {
 
         it('should not fail with no input', function() {
             expect(filter()).toBe('');
+            expect(filter(undefined, now)).toBe('');
         });
 
         it('should display relative time for recent instants', function() {
@@ -57,6 +64,14 @@ describe('The filter ', function() {
             expect(filter(todayAt(15, 0), now)).toBe('Aujourd’hui à 15h00.');
             expect(filter(todayAt(18, 0), now)).toBe('Aujourd’hui à 18h00.');
             expect(filter(todayAt(22, 33), now)).toBe('Aujourd’hui à 22h33.');
+        });
+
+        it('should display only time for tomorrow and yesterday', function() {
+            expect(filter(tomorrowAt(1, 25), now)).toBe('Demain à 01h25.');
+            expect(filter(tomorrowAt(14, 32), now)).toBe('Demain à 14h32.');
+
+            expect(filter(yesterdayAt(5, 12), now)).toBe('Hier à 05h12.');
+            expect(filter(yesterdayAt(18, 6), now)).toBe('Hier à 18h06.');
         });
 
         it ('should display absolute time for old instants', function() {
