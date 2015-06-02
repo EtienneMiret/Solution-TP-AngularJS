@@ -28,6 +28,9 @@ describe('The filter ', function() {
         var before = function(seconds) {
             return (new Date(now.getTime() - seconds * 1000)).toJSON();
         };
+        var after = function(seconds) {
+            return before(-seconds);
+        }
         var todayAt = function(hours, minutes) {
             return (new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes)).toJSON();
         }
@@ -42,7 +45,7 @@ describe('The filter ', function() {
         });
 
         it('should display relative time for recent instants', function() {
-            expect(filter(before(0), now)).toBe('À l’instant.');
+            expect(filter(before(1), now)).toBe('À l’instant.');
             expect(filter(before(4), now)).toBe('Il y a 4 secondes.');
             expect(filter(before(60), now)).toBe('Il y a une minute.');
             expect(filter(before(5 * 60), now)).toBe('Il y a 5 minutes.');
@@ -51,11 +54,26 @@ describe('The filter ', function() {
         it('should display only time for today', function() {
             expect(filter(todayAt(0, 12), now)).toBe('Aujourd’hui à 00h12.');
             expect(filter(todayAt(0, 36), now)).toBe('Aujourd’hui à 00h36.');
+            expect(filter(todayAt(15, 0), now)).toBe('Aujourd’hui à 15h00.');
+            expect(filter(todayAt(18, 0), now)).toBe('Aujourd’hui à 18h00.');
+            expect(filter(todayAt(22, 33), now)).toBe('Aujourd’hui à 22h33.');
         });
 
         it ('should display absolute time for old instants', function() {
-            expect(filter((new Date(2005, 11, 25, 14, 32)).toJSON(), now)).toBe('Le 25/12/2005 à 14h32.');
-            expect(filter((new Date(1935, 1, 5, 8, 26)).toJSON(), now)).toBe('Le 05/02/1935 à 08h26.');
+            expect(filter(new Date(2005, 11, 25, 14, 32).toJSON(), now)).toBe('Le 25/12/2005 à 14h32.');
+            expect(filter(new Date(1935, 1, 5, 8, 26).toJSON(), now)).toBe('Le 05/02/1935 à 08h26.');
+        });
+
+        it('should display relative time for near future instants', function() {
+            expect(filter(after(1), now)).toBe('Dans un instant.');
+            expect(filter(after(3), now)).toBe('Dans 3 secondes.');
+            expect(filter(after(60), now)).toBe('Dans une minute.');
+            expect(filter(after(12 * 60), now)).toBe('Dans 12 minutes.');
+        });
+
+        it('should display absolute time for far future instants', function() {
+            expect(filter(new Date(2025, 5, 23, 17, 52).toJSON(), now)).toBe('Le 23/06/2025 à 17h52.');
+            expect(filter(new Date(2253, 0, 1, 0, 0).toJSON(), now)).toBe('Le 01/01/2253 à 00h00.');
         });
 
     });

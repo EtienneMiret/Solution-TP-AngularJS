@@ -19,6 +19,7 @@ module.exports = function(config) {
       'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js',
       'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-resource.min.js',
       'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-mocks.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js',
       'app/js/**/*.js',
       'test/unit/**/*.js'
     ],
