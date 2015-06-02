@@ -11,6 +11,8 @@
   <dd><a href="mailto:{{contact.email}}">{{contact.email}}</a></dd>
   <dt>Numéro de téléphone</dt>
   <dd><a href="{{contact.tel | telUri}}">{{contact.tel}}</a></dd>
+  <dt ng-repeat-start="field in contact.fields | orderBy:'order'">{{field.name}}</dt>
+  <dd ng-repeat-end>{{field.value}}</dd>
   <dt>Création</dt>
   <dd>{{contact.creation | relativeTime:now}}</dd>
   <dt>Dernière modification</dt>
