@@ -23,3 +23,20 @@ services.factory('uriGenerator', [function() {
 services.factory('Contact', ['$resource', function($resource) {
     return $resource('http://vip46.groupehn.com:20003/angularjs/tpangularjs.php/:id', {id:'@id'});
 }]);
+
+services.factory('contactEditor', ['$location', function($location) {
+    return {
+        addBehavior: function($scope) {
+            $scope.save = function() {
+                $scope.saving = true;
+                $scope.contact.$save({}, function() {
+                    $location.path('/' + $scope.contact.id);
+                }, function(response) {
+                    $scope.saving = false;
+                    $scope.msg = response.data;
+                    console.warn(response);
+                });
+            };
+        }
+    };
+}]);

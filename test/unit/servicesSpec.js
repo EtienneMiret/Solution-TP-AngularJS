@@ -31,4 +31,19 @@ describe('The service', function() {
 
     });
 
+    describe('contactEditor', function() {
+        var contactEditor;
+
+        beforeEach(inject(function(_contactEditor_) {
+            contactEditor = _contactEditor_;
+        }));
+
+        it('should add behavior to $scope objects', function() {
+            var scope = {};
+            contactEditor.addBehavior(scope);
+            expect(scope.save).toEqual(jasmine.any(Function));
+        });
+
+    });
+
 });

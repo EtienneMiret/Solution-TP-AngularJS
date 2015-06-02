@@ -42,7 +42,7 @@ controllers.controller('ContactsDetailCtrl', ['$scope', '$location', '$routePara
     })
 }]);
 
-controllers.controller('ContactsEditCtrl', ['$scope', '$location', '$routeParams', 'Contact', function($scope, $location, $routeParams, Contact) {
+controllers.controller('ContactsEditCtrl', ['$scope', '$routeParams', 'Contact', 'contactEditor', function($scope, $routeParams, Contact, contactEditor) {
     $scope.contact = Contact.get($routeParams, function() {
         $scope.loading = false;
     }, function(response) {
@@ -52,30 +52,12 @@ controllers.controller('ContactsEditCtrl', ['$scope', '$location', '$routeParams
     });
     $scope.loading = true;
     $scope.saving = false;
-    $scope.save = function() {
-        $scope.saving = true;
-        $scope.contact.$save({}, function() {
-            $location.path('/' + $scope.contact.id);
-        }, function(response) {
-            $scope.saving = false;
-            $scope.msg = response.data;
-            console.warn(response);
-        });
-    };
+    contactEditor.addBehavior($scope);
 }]);
 
-controllers.controller('ContactsNewCtrl', ['$scope', '$location', 'Contact', function($scope, $location, Contact) {
+controllers.controller('ContactsNewCtrl', ['$scope', 'Contact', 'contactEditor', function($scope, Contact, contactEditor) {
     $scope.contact = new Contact();
     $scope.loading = false;
     $scope.saving = false;
-    $scope.save = function() {
-        $scope.saving = true;
-        $scope.contact.$save({}, function() {
-            $location.path('/' + $scope.contact.id);
-        }, function(response) {
-            $scope.saving = false;
-            $scope.msg = response.data;
-            console.warn(response);
-        });
-    };
+    contactEditor.addBehavior($scope);
 }]);
