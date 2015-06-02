@@ -34,7 +34,7 @@ directives.directive('hnLoading', [function() {
     };
 }]);
 
-directives.directive('hnLinkField', ['$document', 'uriGenerator', function($document, uriGenerator) {
+directives.directive('hnLinkField', ['$document', 'uriGenerator', 'relativeTimeFilter', '$interval', function($document, uriGenerator, relativeTimeFilter, $interval) {
     var preLink = function(scope, element, attrs) {
         // Ne fait rien.
     };
@@ -59,7 +59,16 @@ directives.directive('hnLinkField', ['$document', 'uriGenerator', function($docu
             link.text(scope.field.value);
             element.append(link);
         } else {
-            element.text(scope.field.value);
+            if (scope.field.type == 'DATETIME') {
+                var timer = $interval(function() {
+                    element.text(relativeTimeFilter(scope.field.value, new Date()));
+                }, 1000);
+                scope.$on('$destroy', function() {
+                    $interval.cancel(timer);
+                });
+            } else {
+                element.text(scope.field.value);
+            }
         }
     };
     return {
