@@ -18,14 +18,18 @@
     <dd ng-repeat-end><input type="{{field.type | lowercase}}" ng-model="field.value"></dd>
   </dl>
 
-  <p>Ajouter un champ&nbsp;:
-    <input type="button" value="Texte" ng-click="addField('TEXT');" class="btn btn-sm btn-default">
-    <input type="button" value="Tél" ng-click="addField('TEL');" class="btn btn-sm btn-default">
-    <input type="button" value="URL" ng-click="addField('URL');" class="btn btn-sm btn-default">
-    <input type="button" value="Email" ng-click="addField('EMAIL');" class="btn btn-sm btn-default">
-    <input type="button" value="Date" ng-click="addField('DATE');" class="btn btn-sm btn-default">
-    <input type="button" value="Heure" ng-click="addField('TIME');" class="btn btn-sm btn-default">
-    <input type="button" value="Date et heure" ng-click="addField('DATETIME');" class="btn btn-sm btn-default"></p>
+  <div class="btn-group" style="margin: 0 0 1ex;">
+  	<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Ajouter un champ <span class="caret"></span></button>
+  	<ul class="dropdown-menu" role="menu">
+  	  <li><a ng-click="addField('TEXT');">Texte</a></li>
+  	  <li><a ng-click="addField('TEL');">N° de téléphone</a></li>
+  	  <li><a ng-click="addField('URL');">URL</a></li>
+  	  <li><a ng-click="addField('EMAIL');">Adresse email</a></li>
+  	  <li><a ng-click="addField('DATE');">Date</a></li>
+  	  <li><a ng-click="addField('TIME');">Heure</a></li>
+  	  <li><a ng-click="addField('DATETIME');">Date et heure</a></li>
+  	</ul>
+  </div>
 
   <p><a href="#/{{contact.id}}" class="btn btn-default">Annuler</a>
     <input type="submit" value="Enregistrer" class="btn btn-success"></p>
