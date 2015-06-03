@@ -12,10 +12,9 @@
     <dd><input ng-model="contact.email" type="email"></dd>
     <dt>Numéro de téléphone</dt>
     <dd><input ng-model="contact.tel" type="tel"></dd>
-    <dt ng-repeat-start="field in contact.fields | orderBy:'order'"><input ng-model="field.name">
+    <dt ng-repeat-start="field in contact.fields | orderBy:'order'" class="additional"><input ng-model="field.name">
       <input type="button" ng-click="remove(field);" value="X" class="btn btn-xs btn-danger">
-      <input type="button" ng-click="moveUp(field);" value="&#x2191;" class="btn btn-xs btn-default" ng-disabled="$first">
-      <input type="button" ng-click="moveDown(field);" value="&#x2193;" class="btn btn-xs btn-default" ng-disabled="$last"></dt>
+      <span class="handle btn btn-xs btn-default">=</span></dt>
     <dd ng-repeat-end><input type="{{field.type | lowercase}}" ng-model="field.value"></dd>
   </dl>
 

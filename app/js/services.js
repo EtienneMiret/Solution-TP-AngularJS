@@ -50,22 +50,42 @@ services.factory('contactEditor', ['$location', function($location) {
                 var fields = $scope.contact.fields;
                 fields.push({name:'', value:'', order:fields.length, type:type});
             };
-            var move = function(field, delta) {
-                var fields = $scope.contact.fields;
-                for (var i = 0; i < fields.length; i++) {
-                    if (fields[i].order == field.order + delta) {
-                        fields[i].order -= delta;
-                        break;
+            $('dl').sortable({
+                items: '> dt.additional',
+                handle: '.handle',
+                start: function(event, ui) {
+                    for (var dd = ui.item.next(); dd && (dd.is('dd') || dd.is(ui.placeholder)); dd = dd.next()) {
+                        if (!dd.is(ui.placeholder)) {
+                            dd.data('helper', true);
+                        }
                     }
+                },
+                sort: function(event, ui) {
+                    var height = ui.item.height();
+                    for (var dd = ui.item.next(); dd && (dd.is('dd') || dd.is(ui.placeholder)); dd = dd.next()) {
+                        if (!dd.is('.ui-sortable-placeholder')) {
+                            dd.css('position', 'absolute');
+                            dd.css('top', (ui.position.top + height) + 'px');
+                            dd.css('left', ui.position.left + 'px');
+                            height += dd.height();
+                        }
+                    }
+                },
+                change: function(event, ui) {
+                    while(ui.placeholder.next().is('dd') && !ui.placeholder.next().data('helper')) {
+                        ui.placeholder.next().after(ui.placeholder);
+                    }
+                },
+                stop: function(event, ui) {
+                    $scope.$apply(function() {
+                        $('dl > dd').css('position', 'static');
+                        $('dl > dd').data('helper', false);
+                        $('dl > dt.additional').each(function (index) {
+                            $(this).scope().field.order = index;
+                        });
+                    });
                 }
-                field.order += delta;
-            };
-            $scope.moveUp = function(field) {
-                move(field, -1);
-            };
-            $scope.moveDown = function(field) {
-                move(field, 1);
-            }
+            });
         }
     };
 }]);

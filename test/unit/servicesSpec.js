@@ -47,8 +47,6 @@ describe('The service', function() {
             expect(scope.save).toEqual(jasmine.any(Function));
             expect(scope.remove).toEqual(jasmine.any(Function));
             expect(scope.addField).toEqual(jasmine.any(Function));
-            expect(scope.moveUp).toEqual(jasmine.any(Function));
-            expect(scope.moveDown).toEqual(jasmine.any(Function));
         });
 
         describe('remove method', function() {
@@ -152,62 +150,6 @@ describe('The service', function() {
 
                 expect(fields.length).toBe(1);
                 expect(fields[0].order).toBe(0);
-            });
-
-        });
-
-        describe('moveUp method', function() {
-
-            it('should reorder fields', function() {
-                expect(a.order).toBe(0);
-                expect(b.order).toBe(1);
-                expect(c.order).toBe(2);
-
-                scope.moveUp(c);
-
-                expect(a.order).toBe(0);
-                expect(b.order).toBe(2);
-                expect(c.order).toBe(1);
-
-                scope.moveUp(c);
-
-                expect(a.order).toBe(1);
-                expect(b.order).toBe(2);
-                expect(c.order).toBe(0);
-
-                scope.moveUp(a);
-
-                expect(a.order).toBe(0);
-                expect(b.order).toBe(2);
-                expect(c.order).toBe(1);
-            });
-
-        });
-
-        describe('moveDown method', function() {
-
-            it('should reorder fields', function() {
-                expect(a.order).toBe(0);
-                expect(b.order).toBe(1);
-                expect(c.order).toBe(2);
-
-                scope.moveDown(a);
-
-                expect(a.order).toBe(1);
-                expect(b.order).toBe(0);
-                expect(c.order).toBe(2);
-
-                scope.moveDown(a);
-
-                expect(a.order).toBe(2);
-                expect(b.order).toBe(0);
-                expect(c.order).toBe(1);
-
-                scope.moveDown(c);
-
-                expect(a.order).toBe(1);
-                expect(b.order).toBe(0);
-                expect(c.order).toBe(2);
             });
 
         });
