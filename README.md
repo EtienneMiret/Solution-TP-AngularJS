@@ -3,6 +3,17 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
+## Exercice 7a
+
+* La base de données est une variable privée du service, il n’y a pas
+  moyen d’y accéder sans passer par le service.
+* Les objets renvoyés par le service (instances de `Contact`) ont
+  deux attributs considérés comme privés (`.$new` et `.$c`). Le
+  controlleur ne doit pas y toucher.
+* Dans le contrôleur, il faut penser à mettre à jour `$scope.contacts`
+  après chaque modification de la base de données via `.$save()` et
+  `.$delete()`.
+
 ## Exercice 6
 
 * Si l’exemple du sujet montrait un filtrage sur une chaîne statique,
