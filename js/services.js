@@ -21,7 +21,7 @@ services.factory('uriGenerator', [function() {
 }]);
 
 services.factory('Contact', ['$interval', function($interval) {
-	var delay = 100; // En milliseconde.
+    var delay = 100; // En milisecondes.
 
     var database = [
         {
@@ -33,81 +33,66 @@ services.factory('Contact', ['$interval', function($interval) {
         },
         {
             id: 1,
-            firstName:'Archibald',
-            lastName: 'Haddock',
-            email: 'capitaine.haddock@herge.be',
-            tel: '0 899 708 708'
+            firstName : 'Archibald',
+            lastName : 'Haddock',
+            email : 'capitaine.haddock@herge.be',
+            tel : '0 899 708 708'
         },
         {
             id: 2,
-            firstName: 'Achile',
-            lastName: 'Talon',
-            email: 'achiletalon@polite.be',
-            tel: '09 87 65 43 21'
+            firstName : 'Achile',
+            lastName : 'Talon',
+            email : 'achiletalon@polite.be',
+            tel : '09 87 65 43 21'
         }
     ];
-
+    
     var lastId = 2;
 
-    /* Copie les champs de « from » vers « to » sauf
-     * ceux dont le nom commence par un ‘$’. */
-    var copyFields = function(from, to) {
-    	for (var prop in from) {
-    		if (prop[0] != '$') {
-    			to[prop] = from[prop];
-    		}
-    	}
+    var copyFields = function(source, dest) {
+        for (var field in source) {
+            if (field[0] != '$') {
+                dest[field] = source[field];
+            }
+        }
     }
 
-    var Contact = function() {
-        var new_ = true;
-        var c = {};
+    var Contact = function(data) {
+        this.$c = data || {};
+        this.$new = data === undefined;
+        copyFields(this.$c, this);
+    };
+
+    Contact.prototype.$delete = function(params, success, error) {
         var self = this;
-
-        this.$setData = function(data, full) {
-        	c = data;
-            if (full) {
-            	copyFields(c, this);
+        $interval(function() {
+            if (self.$new) {
+                error && error();
             } else {
-                this.id = c.id;
-                this.firstName = c.firstName;
-                this.lastName = c.lastName;
-            }
-            new_ = false;
-        };
-
-        this.$save = function(params, success, error) {
-        	$interval(function() {
-        		copyFields(self, c);
-                if (new_) {
-                    c.id = ++lastId;
-                    database.push(c);
-                    self.id = c.id;
-                    new_ = false;
-                }
+                database.splice(database.indexOf(self.$c), 1);
                 success && success();
-        	}, delay, 1);
-        };
+            }
+        }, delay, 1);
+    };
 
-        this.$delete = function(params, success, error) {
-        	$interval(function() {
-        		if (new_) {
-        			error && error();
-        		} else {
-        			database.splice(database.indexOf(c), 1);
-        			success && success();
-        		}
-        	}, delay, 1);
-        };
+    Contact.prototype.$save = function(params, success, error) {
+        var self = this;
+        $interval(function() {
+            if (self.$new) {
+                self.id = ++lastId;
+                database.push(self.$c);
+                self.$new = false;
+            }
+            copyFields(self, self.$c);
+            success && success();
+        }, delay, 1);
     };
 
     Contact.query = function(params, success, error) {
         var result = [];
         $interval(function() {
             for (var i = 0; i < database.length; i++) {
-            	var c = new Contact();
-            	c.$setData(database[i], false);
-                result.push(c);
+                result.push(new Contact(database[i]));
             }
             success && success();
         }, delay, 1);
@@ -115,24 +100,26 @@ services.factory('Contact', ['$interval', function($interval) {
     };
 
     Contact.get = function(params, success, error) {
-    	var result = new Contact();
-    	$interval(function() {
-            var i, c;
-            for (i = 0; i < database.length; i++) {
-                c = database[i];
-                if (c.id == params.id) {
+        var result = new Contact();
+        $interval(function() {
+            var c;
+            for (var i = 0; i < database.length; i++) {
+                if (database[i].id == params.id) {
+                    c = database[i];
                     break;
                 }
             }
-            if (i == database.length) {
-                error && error();
+            if (c) {
+                result.$c = c;
+                result.$new = false;
+                copyFields(c, result);
+                success && success();
             } else {
-            	result.$setData(c, true);
-            	success && success();
+                error && error();
             }
-    	}, delay, 1);
+        }, delay, 1);
         return result;
-    }
+    };
 
     return Contact;
 }]);
