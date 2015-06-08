@@ -20,47 +20,108 @@ app.factory('uriGenerator', [function() {
     }
 }]);
 
-app.controller('ContactsListCtrl', ['$scope', 'uriGenerator', function($scope, uriGenerator) {
-
-    $scope.contacts = [
+app.factory('Contact', [function() {
+    var database = [
         {
+            id: 0,
             firstName: 'Olivier',
             lastName: 'Dupont',
             email: 'olivier.dupont@groupehn.com',
             tel: '01 23 45 67 89'
         },
         {
-            firstName:'Archibald',
-            lastName: 'Haddock',
-            email: 'capitaine.haddock@herge.be',
-            tel: '0 899 708 708'
+            id: 1,
+            firstName : 'Archibald',
+            lastName : 'Haddock',
+            email : 'capitaine.haddock@herge.be',
+            tel : '0 899 708 708'
         },
         {
-            firstName: 'Achile',
-            lastName: 'Talon',
-            email: 'achiletalon@polite.be',
-            tel: '09 87 65 43 21'
+            id: 2,
+            firstName : 'Achile',
+            lastName : 'Talon',
+            email : 'achiletalon@polite.be',
+            tel : '09 87 65 43 21'
         }
     ];
+    var lastId = 2;
 
-    for (var i = 0; i < $scope.contacts.length; i++) {
-        $scope.contacts[i].telUri = uriGenerator.tel($scope.contacts[i].tel);
+    var copyFields = function(source, dest) {
+        for (var field in source) {
+            if (field[0] != '$') {
+                dest[field] = source[field];
+            }
+        }
     }
 
-    $scope.remove = function(contact) {
-        $scope.contacts.splice($scope.contacts.indexOf(contact), 1);
+    var Contact = function(data) {
+        this.$c = data || {};
+        this.$new = data === undefined;
+        copyFields(this.$c, this);
     };
 
-    $scope.newContact = {};
+    Contact.prototype.$delete = function() {
+        if (!this.$new) {
+            database.splice(database.indexOf(this.$c), 1);
+        }
+    };
+
+    Contact.prototype.$save = function() {
+        if (this.$new) {
+            this.id = ++lastId;
+            database.push(this.$c);
+            this.$new = false;
+        }
+        copyFields(this, this.$c);
+    };
+
+    Contact.query = function() {
+        var result = [];
+        for (var i = 0; i < database.length; i++) {
+            result.push(new Contact(database[i]));
+        }
+        return result;
+    };
+
+    Contact.get = function(params) {
+        for (var i = 0; i < database.length; i++) {
+            if (database[i].id == params.id) {
+                return new Contact(database[i]);
+            }
+        }
+    }
+
+    return Contact;
+}]);
+
+app.controller('ContactsListCtrl', ['$scope', 'uriGenerator', 'Contact', function($scope, uriGenerator, Contact) {
+
+    var addAllTelUris = function() {
+        for (var i = 0; i < $scope.contacts.length; i++) {
+            $scope.contacts[i].telUri = uriGenerator.tel($scope.contacts[i].tel);
+        }
+    }
+
+    $scope.contacts = Contact.query();
+    addAllTelUris();
+
+    $scope.remove = function(contact) {
+        contact.$delete();
+        $scope.contacts = Contact.query();
+        addAllTelUris();
+    };
+
+    $scope.newContact = new Contact();
 
     $scope.add = function() {
         if ($scope.newContact.firstName
                 && $scope.newContact.lastName
                 && $scope.newContact.email
                 && $scope.newContact.tel) {
-            $scope.newContact.telUri = uriGenerator.tel($scope.newContact.tel);
-            $scope.contacts.push($scope.newContact);
-            $scope.newContact = {};
+            $scope.newContact.$save();
+            $scope.newContact = new Contact();
+            $scope.contacts = Contact.query();
+            addAllTelUris();
         }
     };
 }]);
