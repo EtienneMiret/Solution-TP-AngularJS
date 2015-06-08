@@ -3,13 +3,10 @@
 Attention, ceci n’est pas *la* solution, mais *un exemple* de solution.
 Il n’y a jamais une seule solution possible à un problème informatique.
 
-## Exercice 7
+## Exercice 7b
 
 * `success && success();` est un racourci pour tester que `success`
   est définie avant de l’appeler.
-* Remarquer qu la base de données est une variable privée du service.
-  Il n’y a aucun moyen d’y accéder sans passer par le service.
-* De même, `c`, `new_` et `self` sont des variables privées d’un contact.
 * Tout ce qui doit s’exécuter après la fin d’une méthode asynchrone
   doit être mis dans une méthode callback.
 * Le module principal ne dépend que du module des contrôleurs,
@@ -19,6 +16,17 @@ Il n’y a jamais une seule solution possible à un problème informatique.
 * Si on indique que le module principal dépend des deux autres
   et qu’eux-mêmes n’ont aucunes dépendances ça marche,
   mais ce n’est pas propre et ça pose des problèmes pour les tests unitaires.
+
+## Exercice 7a
+
+* La base de données est une variable privée du service, il n’y a pas
+  moyen d’y accéder sans passer par le service.
+* Les objets renvoyés par le service (instances de `Contact`) ont
+  deux attributs considérés comme privés (`.$new` et `.$c`). Le
+  controlleur ne doit pas y toucher.
+* Dans le contrôleur, il faut penser à mettre à jour `$scope.contacts`
+  après chaque modification de la base de données via `.$save()` et
+  `.$delete()`.
 
 ## Exercice 6
 
