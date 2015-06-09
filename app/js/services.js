@@ -50,6 +50,31 @@ services.factory('contactEditor', ['$location', function($location) {
                 var fields = $scope.contact.fields;
                 fields.push({name:'', value:'', order:fields.length, type:type});
             };
+            $scope.title = function(field) {
+                switch(field.type) {
+                case 'TEXT':
+                    return 'Texte libre';
+                case 'TEL':
+                    return 'Numéro de téléphone';
+                case 'URL':
+                    return 'URL';
+                case 'EMAIL':
+                    return 'Adresse email';
+                case 'DATE':
+                    return 'Date';
+                case 'TIME':
+                    return 'Heure';
+                case 'DATETIME':
+                    return 'Date et heure';
+                default:
+                    return '';
+                }
+            };
+            $scope.$watch('contact.fields.length', function() {
+                $scope.$evalAsync(function() {
+                    $('[data-toggle="tooltip"]').tooltip({placement:'right'});
+                });
+            });
             $('dl').sortable({
                 items: '> dt.additional',
                 handle: '.handle',

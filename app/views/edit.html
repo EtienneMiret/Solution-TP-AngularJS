@@ -15,7 +15,7 @@
     <dt ng-repeat-start="field in contact.fields | orderBy:'order'" class="additional"><input ng-model="field.name">
       <input type="button" ng-click="remove(field);" value="X" class="btn btn-xs btn-danger">
       <span class="handle btn btn-xs btn-default">=</span></dt>
-    <dd ng-repeat-end><input type="{{field.type | lowercase}}" ng-model="field.value"></dd>
+    <dd ng-repeat-end><input type="{{field.type | lowercase}}" ng-model="field.value" data-toggle="tooltip" title="{{title(field)}}"></dd>
   </dl>
 
   <div class="btn-group" style="margin: 0 0 1ex;">
